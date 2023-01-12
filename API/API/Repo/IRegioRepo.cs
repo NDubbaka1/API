@@ -4,6 +4,6 @@ namespace API.Repo
 {
     public interface IRegioRepo
     {
-       IEnumerable<Region> GetAllRegion();
+       Task<IEnumerable<Region>> GetAllRegionAsync();
     }
 }

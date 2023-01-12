@@ -1,4 +1,5 @@
 using API.Data;
+using API.Repo;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +18,15 @@ builder.Services.AddDbContext<APIDBContext>(options =>
 
 });
 
+builder.Services.AddScoped<IRegioRepo,RegionRepo>();
+
 //builder.Services.AddDbContext<APIDBContext>(options =>
 //{
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("APIConnection"));
 //});
+
+// AUTOMAPPER 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

@@ -19,5 +19,10 @@ namespace API.Repo
         {
             return await aPIDBContext.Regions.ToListAsync();
         }
+
+        public async Task<Region> GetRegionByIDAsync(Guid id)
+        {
+            return await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id ==id);
+        }
     }
 }

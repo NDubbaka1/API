@@ -31,5 +31,19 @@ namespace API.Controllers
             var RegionsDTO =mapper.Map<List<Model.DTO.Region>>(Regions);
             return Ok(RegionsDTO);
         }
+
+        [HttpGet]
+        [Route("{id:guid}")]  // restrict to take only guid values
+        public async Task<IActionResult> GetRegionByID(Guid id)
+        {
+            var Regions = await regionRepo.GetRegionByIDAsync(id );
+
+            if (Regions == null)
+            {
+                return NotFound();  
+            }
+            var RegionsDTO = mapper.Map<Model.DTO.Region>(Regions);
+            return Ok(RegionsDTO);
+        }
     }
 }

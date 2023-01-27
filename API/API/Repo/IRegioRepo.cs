@@ -7,5 +7,7 @@ namespace API.Repo
        Task<IEnumerable<Region>> GetAllRegionAsync();
 
         Task<Region> GetRegionByIDAsync(Guid id);
+
+        Task<Region> AddRegionAsync(Region region);
     }
 }

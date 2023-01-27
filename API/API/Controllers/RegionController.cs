@@ -1,4 +1,5 @@
 ﻿using API.Model.Domain;
+using API.Model.DTO;
 using API.Repo;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace API.Controllers
            this.regionRepo = regionRepo;
             this.mapper = mapper;
         }
-
+        
         
 
         [HttpGet]
@@ -34,6 +35,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("{id:guid}")]  // restrict to take only guid values
+        [ActionName("GetRegionByID")]
         public async Task<IActionResult> GetRegionByID(Guid id)
         {
             var Regions = await regionRepo.GetRegionByIDAsync(id );
@@ -44,6 +46,37 @@ namespace API.Controllers
             }
             var RegionsDTO = mapper.Map<Model.DTO.Region>(Regions);
             return Ok(RegionsDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRegionAsync(AddRegion addRegion)
+        {
+            //Request DTO to model
+            var region = new Model.Domain.Region()
+            {
+                Code= addRegion.Code,
+                Name= addRegion.Name,  
+                Lat= addRegion.Lat,
+                Long= addRegion.Long,
+                Area= addRegion.Area,
+                Pop= addRegion.Pop
+            };
+            //Pass details to repository
+
+            region =await regionRepo.AddRegionAsync(region);
+
+            //Convert back to DTO
+            var regionDTO = new Model.DTO.Region()
+            {
+                Code= region.Code,
+                Name = region.Name,
+                Lat = region.Lat,
+                Long = region.Long,
+                Area = region.Area,
+                Pop = region.Pop
+            };
+
+            return CreatedAtAction(nameof(GetRegionByID), new { id = region.Id }, regionDTO);
         }
     }
 }

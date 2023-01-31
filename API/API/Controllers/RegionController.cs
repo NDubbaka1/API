@@ -78,5 +78,32 @@ namespace API.Controllers
 
             return CreatedAtAction(nameof(GetRegionByID), new { id = region.Id }, regionDTO);
         }
+
+        [HttpDelete]
+        [Route("{id:guid}")]  // restrict to take only guid values
+        //[ActionName("GetRegionByID")]
+        public async Task<IActionResult> DeleteRegionByID(Guid id)
+        {
+            var Regions = await regionRepo.DeleteRegionByID(id);
+
+            if (Regions == null)
+            {
+                return NotFound();
+            }
+
+            var regionDTO = new Model.DTO.Region()
+            {
+               Id= Regions.Id,
+                Code = Regions.Code,
+                Name = Regions.Name,
+                Lat = Regions.Lat,
+                Long = Regions.Long,
+                Area = Regions.Area,
+                Pop = Regions.Pop
+            };
+
+
+            return Ok(regionDTO);
+        }
     }
 }

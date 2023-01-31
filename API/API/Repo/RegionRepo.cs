@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Model.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace API.Repo
 {
@@ -13,13 +14,7 @@ namespace API.Repo
            this.aPIDBContext = aPIDBContext;
         }
 
-        public async Task<Region> AddRegionAsync(Region region)
-        {
-           region.Id = Guid.NewGuid();
-           await aPIDBContext.Regions.AddAsync(region);
-            await aPIDBContext.SaveChangesAsync();
-            return region;
-        }
+       
 
         public async Task<IEnumerable<Region>> GetAllRegionAsync()
         {
@@ -30,7 +25,29 @@ namespace API.Repo
        
         public async Task<Region> GetRegionByIDAsync(Guid id)
         {
-            return await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id ==id);
+            return await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<Region> AddRegionAsync(Region region)
+        {
+            region.Id = Guid.NewGuid();
+            await aPIDBContext.Regions.AddAsync(region);
+            await aPIDBContext.SaveChangesAsync();
+            return region;
+        }
+
+        public async Task<Region> DeleteRegionByID(Guid id)
+        {
+            var region = await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            if (region ==null)
+            {
+                return null;
+            }
+
+             aPIDBContext.Regions.Remove(region);
+            await aPIDBContext.SaveChangesAsync();
+            return region;
+        }
+
     }
 }

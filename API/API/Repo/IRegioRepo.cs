@@ -9,5 +9,7 @@ namespace API.Repo
         Task<Region> GetRegionByIDAsync(Guid id);
 
         Task<Region> AddRegionAsync(Region region);
+
+        Task<Region> DeleteRegionByID(Guid id);
     }
 }

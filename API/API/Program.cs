@@ -20,6 +20,10 @@ builder.Services.AddDbContext<APIDBContext>(options =>
 
 builder.Services.AddScoped<IRegioRepo,RegionRepo>();
 
+builder.Services.AddScoped<IWalkRepo, WalkRepo>();
+
+builder.Services.AddScoped<IWalkDiffRepo, WalkDiffRepo>();
+
 //builder.Services.AddDbContext<APIDBContext>(options =>
 //{
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("APIConnection"));

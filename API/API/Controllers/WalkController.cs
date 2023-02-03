@@ -31,13 +31,16 @@ namespace API.Controllers
         [ActionName("GetWalkByID")]
         public async Task<IActionResult> GetWalkByIdAsync(Guid id)
         {
+            // get walk object from domian model
             var walk = await walkRepo.GetWalkByID(id);
             if (walk == null)
             {
                 return NotFound();
             }
-
+            //convert domain model to DTO
             var walkDTO = mapper.Map<List<Model.DTO.Walk>>(walk);
+
+            //return response
             return Ok(walkDTO);
         }
     }

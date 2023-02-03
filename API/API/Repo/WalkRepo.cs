@@ -14,7 +14,10 @@ namespace API.Repo
 
         public async Task<IEnumerable<Walk>> GetWalkByID()
         {
-            var walk = await aPIDBContext.Walks.ToListAsync();
+            var walk = await aPIDBContext.Walks.
+                Include(x => x.Region)
+                .Include(x => x.WalkDiffculty).
+                ToListAsync();
            
             return walk;
            
@@ -22,7 +25,8 @@ namespace API.Repo
 
         public async Task<Walk> GetWalkByID(Guid id)
         {
-            return await aPIDBContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+            return await aPIDBContext.Walks.Include(x => x.Region)
+                .Include(x => x.WalkDiffculty).FirstOrDefaultAsync(x => x.Id == id);
             
         }
     }

@@ -8,5 +8,9 @@ namespace API.Repo
         Task<IEnumerable<Walk>> GetWalkByID();
 
         Task<Walk> GetWalkByID(Guid id);
+
+        Task<Walk> AddWalkByID(Walk walk);
+
+        Task<Walk> UpdateWalkById(Guid  id, Walk   walk );
     }
 }

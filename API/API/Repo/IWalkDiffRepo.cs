@@ -6,5 +6,9 @@ namespace API.Repo
     {
 
         Task<IEnumerable<WalkDiffculty>> GetAllWalkDiff();
+
+        Task<WalkDiffculty> GetWalkDiffculty(Guid id);
+
+        Task<WalkDiffculty> AddWalkDiffculty(WalkDiffculty walkDiffculty);
     }
 }

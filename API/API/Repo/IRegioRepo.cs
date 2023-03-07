@@ -11,5 +11,7 @@ namespace API.Repo
         Task<Region> AddRegionAsync(Region region);
 
         Task<Region> DeleteRegionByID(Guid id);
+
+        Task<Region> UpdateRegionByID(Guid id, Region region);
     }
 }

@@ -9,14 +9,14 @@ namespace API.Controllers
 
     [ApiController]
     [Route("WalkDiffculty")]
-    public class WalkDiffcultyController :Controller
+    public class WalkDiffcultyController : Controller
     {
         private readonly IWalkDiffRepo walkDiffRepo;
         private readonly IMapper Mapper;
 
         public WalkDiffcultyController(IWalkDiffRepo walkDiffRepo, IMapper Mapper)
         {
-            this.walkDiffRepo=walkDiffRepo;
+            this.walkDiffRepo = walkDiffRepo;
             this.Mapper = Mapper;
         }
 
@@ -46,22 +46,73 @@ namespace API.Controllers
             //Request DTO to model
             var walkdiffculty = new Model.Domain.WalkDiffculty()
             {
-                Code= addWalkDiffculty.Code
+                Code = addWalkDiffculty.Code
             };
 
 
             //pass to repo
-           walkdiffculty= await walkDiffRepo.AddWalkDiffculty(walkdiffculty);
+            walkdiffculty = await walkDiffRepo.AddWalkDiffculty(walkdiffculty);
 
             //conver model to DTO
 
             var walkdiffcultyDTO = new Model.DTO.WalkDiffculty()
             {
-                Id= walkdiffculty.Id,
+                Id = walkdiffculty.Id,
                 Code = walkdiffculty.Code
             };
 
-            return CreatedAtAction(nameof(GetWalkDiffcultyByID), new {Id = walkdiffcultyDTO.Id }, walkdiffcultyDTO);
+            return CreatedAtAction(nameof(GetWalkDiffcultyByID), new { Id = walkdiffcultyDTO.Id }, walkdiffcultyDTO);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteWalkDiff(Guid id)
+        {
+            var walkdiff = await walkDiffRepo.DeleteWalkDiff(id);
+
+            if (walkdiff == null)
+            {
+                return null;
+            }
+            var walkdiffDTO = new Model.DTO.WalkDiffculty()
+            {
+                Code = walkdiff.Code,
+                Id = walkdiff.Id
+
+            };
+
+            return Ok(walkdiffDTO);
+
+        }
+
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateWalkDiff (UpdateWalkDiff updateWalkDiff , Guid id)
+        {
+           
+            //pass domain
+            var walkDiff = new Model.Domain.WalkDiffculty()
+            {
+                Code = updateWalkDiff.Code
+
+            };
+            // pass domain to repo
+            walkDiff = await walkDiffRepo.UpdateWalkDiffculty(walkDiff, id);
+
+            // sent to DTO
+            if (walkDiff != null)
+            {
+                var walkDiffDTO = new Model.DTO.WalkDiffculty()
+                {
+                    Id = walkDiff.Id,
+                    Code = walkDiff.Code
+                };
+                return Ok(walkDiffDTO);
+            }
+            return NotFound();
+        }
+
+
+
     }
 }

@@ -53,5 +53,17 @@ namespace API.Repo
             }
             return null;
         }
+
+        public async Task<Walk> deleteWalk(Guid id)
+        {
+            var walk = await aPIDBContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+            if (walk == null)
+            {
+                return null;
+            }
+            aPIDBContext.Walks.Remove(walk);
+            await aPIDBContext.SaveChangesAsync();
+            return walk;
+        }
     }
 }

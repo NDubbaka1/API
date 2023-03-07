@@ -1,6 +1,6 @@
 ﻿namespace API.Model.DTO
 {
-    public class AddWalk
+    public class UpdateWalk
     {
         public string Name { get; set; }
         public double lenght { get; set; }

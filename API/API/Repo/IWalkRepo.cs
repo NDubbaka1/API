@@ -12,5 +12,7 @@ namespace API.Repo
         Task<Walk> AddWalkByID(Walk walk);
 
         Task<Walk> UpdateWalkById(Guid  id, Walk   walk );
+
+        Task<Walk> deleteWalk(Guid id);
     }
 }

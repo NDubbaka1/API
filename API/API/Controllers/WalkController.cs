@@ -14,8 +14,9 @@ namespace API.Controllers
         private readonly IWalkRepo walkRepo;
         private readonly IMapper mapper;
 
-        public WalkController(IWalkRepo walkRepo, IMapper mapper) { 
-         this.walkRepo = walkRepo;
+        public WalkController(IWalkRepo walkRepo, IMapper mapper)
+        {
+            this.walkRepo = walkRepo;
             this.mapper = mapper;
         }
 
@@ -25,7 +26,7 @@ namespace API.Controllers
             var walk = await walkRepo.GetWalkByID();
             var walkDTO = mapper.Map<List<Model.DTO.Walk>>(walk);
 
-            return Ok(walkDTO); 
+            return Ok(walkDTO);
         }
 
         [HttpGet]
@@ -49,21 +50,22 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalkById(AddWalk addWalk)
         {
-            var walk = new Model.Domain.Walk() { 
+            var walk = new Model.Domain.Walk()
+            {
                 Name = addWalk.Name,
-                lenght =   addWalk.lenght,
-               
-                RegionID= addWalk.RegionID,
-                WalkdiffcultyID=addWalk.WalkdiffcultyID
+                lenght = addWalk.lenght,
+
+                RegionID = addWalk.RegionID,
+                WalkdiffcultyID = addWalk.WalkdiffcultyID
 
 
             };
 
             //pass to repo
-           walk = await walkRepo.AddWalkByID(walk); 
-            
-            
-            
+            walk = await walkRepo.AddWalkByID(walk);
+
+
+
             var walkDTO = new Model.Domain.Walk()
             {
                 Id = walk.Id,
@@ -75,12 +77,12 @@ namespace API.Controllers
             };
 
 
-            return CreatedAtAction(nameof(GetWalkByIdAsync), new { id = walkDTO.Id},walkDTO);
+            return CreatedAtAction(nameof(GetWalkByIdAsync), new { id = walkDTO.Id }, walkDTO);
         }
 
         [HttpPut]
         [Route("{id :guid}")]
-        public async Task <IActionResult> UpdateWalkByID(Guid id, Walk walk)
+        public async Task<IActionResult> UpdateWalkByID(Guid id, UpdateWalk walk)
         {
 
             //convert  DTO to domain object
@@ -93,19 +95,19 @@ namespace API.Controllers
             };
 
             // pass to repo
-           var walks= await walkRepo.UpdateWalkById(id,walkDomain);
+            walkDomain = await walkRepo.UpdateWalkById(id, walkDomain);
             // Check Walk is null
 
-            if (walks!= null)
+            if (walkDomain != null)
             {
                 //Pass domain to DTO object
 
                 var walkDTO = new Model.DTO.Walk()
                 {
-                    Name = walks.Name,
-                    WalkdiffcultyID = walks.WalkdiffcultyID,
-                    lenght = walks.lenght,
-                    RegionID = walks.RegionID
+                    Name = walkDomain.Name,
+                    WalkdiffcultyID = walkDomain.WalkdiffcultyID,
+                    lenght = walkDomain.lenght,
+                    RegionID = walkDomain.RegionID
                 };
                 return Ok(walkDTO);
             }
@@ -114,5 +116,30 @@ namespace API.Controllers
 
             return NotFound();
         }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteWalk(Guid id)
+        {
+            var walk = await walkRepo.deleteWalk(id);
+            if (walk == null)
+            {
+                return NotFound();
+            }
+            var walkDTO = new Model.DTO.Walk()
+            {
+                Name = walk.Name,
+                Id = walk.Id,
+
+
+                lenght = walk.lenght,
+                RegionID = walk.RegionID,
+
+                WalkdiffcultyID = walk.WalkdiffcultyID
+            };
+            return Ok(walkDTO);
+
+        }
     }
 }
+

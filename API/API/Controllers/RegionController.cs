@@ -105,5 +105,49 @@ namespace API.Controllers
 
             return Ok(regionDTO);
         }
+
+
+        [HttpPut]
+        [Route("{id :guid}")]
+
+        public async Task<IActionResult> UpdateregionByID (Guid id, Model.DTO.UpdateRegion updateRegion)
+        {
+            var regionDTO = new Model.Domain.Region()
+            {
+                Code = updateRegion.Code,
+                Area = updateRegion.Area,
+                Lat = updateRegion.Lat,
+                Long = updateRegion.Long,
+                Pop = updateRegion.Pop,
+                Name = updateRegion.Name
+            };
+
+            // pass details to repository
+
+            regionDTO = await regionRepo.UpdateRegionByID(id, regionDTO);
+
+            //check if region is null
+            if (regionDTO == null)
+            {
+                return NotFound();
+            }
+
+            // conver Domain back to DTO 
+
+            var region = new Model.DTO.Region()
+            {
+                Id = regionDTO.Id,
+                Code = regionDTO.Code,
+                Name = regionDTO.Name,
+                Lat = regionDTO.Lat,
+                Long = regionDTO.Long,
+                Area = regionDTO.Area,
+                Pop = regionDTO.Pop
+            };
+
+            return Ok(regionDTO);
+
+           
+        }
     }
 }

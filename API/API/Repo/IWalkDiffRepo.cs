@@ -10,5 +10,10 @@ namespace API.Repo
         Task<WalkDiffculty> GetWalkDiffculty(Guid id);
 
         Task<WalkDiffculty> AddWalkDiffculty(WalkDiffculty walkDiffculty);
+
+        Task<WalkDiffculty> DeleteWalkDiff(Guid id);
+
+        Task<WalkDiffculty> UpdateWalkDiffculty(WalkDiffculty walkDiffculty, Guid id);
     }
 }
+

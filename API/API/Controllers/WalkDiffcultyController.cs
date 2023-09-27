@@ -43,6 +43,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalkDiffculty(AddWalkDiffculty addWalkDiffculty)
         {
+
+            if(!ValidAddWalkDiff(addWalkDiffculty))
+            {
+                return BadRequest();
+            }
+
             //Request DTO to model
             var walkdiffculty = new Model.Domain.WalkDiffculty()
             {
@@ -112,7 +118,52 @@ namespace API.Controllers
             return NotFound();
         }
 
+        #region Private methods
+        //Validation for Walk diffculty
 
+        private bool ValidAddWalkDiff(AddWalkDiffculty addWalk)
+        {
+            if (addWalk == null)
+            {
+                ModelState.AddModelError(nameof(addWalk), $"Add Walk");
+            }
+
+            if (string.IsNullOrEmpty(addWalk.Code))
+            {
+                ModelState.AddModelError(nameof(addWalk.Code), $"Code cannot be null");
+            }
+
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        private bool ValidUpdateWalkDiff(UpdateWalkDiff updateWalkDiff, Guid id)
+        {
+            if (updateWalkDiff == null)
+            {
+                ModelState.AddModelError(nameof(updateWalkDiff), $"Add Walkdiffculty");
+            }
+
+            if (string.IsNullOrEmpty(updateWalkDiff.Code))
+            {
+                ModelState.AddModelError(nameof(updateWalkDiff.Code), $"Code cannot be null");
+            }
+
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
 
     }
 }

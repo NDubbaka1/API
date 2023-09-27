@@ -51,6 +51,14 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegionAsync(AddRegion addRegion)
         {
+            //// Adding Validation for Domain model
+            //if (!ValiAddRegion(addRegion))
+            //{
+            //    return BadRequest();
+            //}
+            
+
+
             //Request DTO to model
             var region = new Model.Domain.Region()
             {
@@ -112,6 +120,11 @@ namespace API.Controllers
 
         public async Task<IActionResult> UpdateregionByID (Guid id, Model.DTO.UpdateRegion updateRegion)
         {
+            //if (!ValiUpdateRegion(id, updateRegion))
+            //{
+            //    return BadRequest();
+            //} 
+
             var regionDTO = new Model.Domain.Region()
             {
                 Code = updateRegion.Code,
@@ -149,5 +162,102 @@ namespace API.Controllers
 
            
         }
+
+      
+
+        #region private Methods
+
+        // Adding validation to Adding Region properties
+        private bool ValiAddRegion(AddRegion addRegion)
+        {
+            if (addRegion == null)
+            {
+                ModelState.AddModelError(nameof(addRegion), $"Add region");
+            }
+
+            if (string.IsNullOrEmpty(addRegion.Code))
+            {
+                ModelState.AddModelError(nameof(addRegion.Code), $"{nameof(addRegion.Code)}Region code can't be empty ");
+            }
+
+            if (string.IsNullOrEmpty(addRegion.Name))
+            {
+                ModelState.AddModelError(nameof(addRegion.Name), $"{nameof(addRegion.Name)}Region code can't be empty ");
+            }
+
+            if (addRegion.Area <=0)
+            {
+                ModelState.AddModelError(nameof(addRegion.Area), $"{nameof(addRegion.Area)}Region code can't be empty ");
+            }
+
+            if (addRegion.Long <=0)
+            {
+                ModelState.AddModelError(nameof(addRegion.Long), $"{nameof(addRegion.Long)}Region code can't be empty ");
+            }
+
+            if (addRegion.Lat <=0)
+            {
+                ModelState.AddModelError(nameof(addRegion.Lat), $"{nameof(addRegion.Lat)}Region code can't be empty ");
+            }
+
+            if (addRegion.Pop <= 0)
+            {
+                ModelState.AddModelError(nameof(addRegion.Pop), $"{nameof(addRegion.Pop)}Region code can't be empty ");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValiUpdateRegion(Guid id, Model.DTO.UpdateRegion updateRegion)
+        {
+            if (updateRegion == null)
+            {
+                ModelState.AddModelError(nameof(updateRegion), $"Add region");
+            }
+
+            if (string.IsNullOrEmpty(updateRegion.Code))
+            {
+                ModelState.AddModelError(nameof(updateRegion.Code), $"{nameof(updateRegion.Code)}Region code can't be empty ");
+            }
+
+            if (string.IsNullOrEmpty(updateRegion.Name))
+            {
+                ModelState.AddModelError(nameof(updateRegion.Name), $"{nameof(updateRegion.Name)}Region code can't be empty ");
+            }
+
+            if (updateRegion.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRegion.Area), $"{nameof(updateRegion.Area)}Region code can't be empty ");
+            }
+
+            if (updateRegion.Long <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRegion.Long), $"{nameof(updateRegion.Long)}Region code can't be empty ");
+            }
+
+            if (updateRegion.Lat == 0)
+            {
+                ModelState.AddModelError(nameof(updateRegion.Lat), $"{nameof(updateRegion.Lat)}Region code can't be empty ");
+            }
+
+            if (updateRegion.Pop == 0)
+            {
+                ModelState.AddModelError(nameof(updateRegion.Pop), $"{nameof(updateRegion.Pop)}Region code can't be empty ");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+
+            return true;
+        }
+        #endregion
     }
 }

@@ -140,6 +140,79 @@ namespace API.Controllers
             return Ok(walkDTO);
 
         }
+
+
+        #region Private methods
+        //Validation for Walk add
+
+        private bool ValidAddWalk(AddWalk addWalk)
+        {
+            if (addWalk == null)
+            {
+                ModelState.AddModelError(nameof(addWalk), $"Add Walk");
+            }
+
+            if (string.IsNullOrEmpty(addWalk.Name))
+            {
+                ModelState.AddModelError(nameof(addWalk.Name),$"Name cannot be null");
+            }
+
+            if (addWalk.lenght<=0)
+            {
+                ModelState.AddModelError(nameof(addWalk.lenght), $"lenght cannot be null");
+            }
+            if (addWalk.WalkdiffcultyID == null)
+            {
+                ModelState.AddModelError(nameof(addWalk.WalkdiffcultyID), $"ID cannot be null");
+            }
+            if (addWalk.RegionID == null)
+            {
+                ModelState.AddModelError(nameof(addWalk.Name), $"Name cannot be null");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        private bool ValidUpdateWalk(Guid id, UpdateWalk walk)
+        {
+            if (walk == null)
+            {
+                ModelState.AddModelError(nameof(walk), $"Add Walk");
+            }
+
+            if (string.IsNullOrEmpty(walk.Name))
+            {
+                ModelState.AddModelError(nameof(walk.Name), $"Name cannot be null");
+            }
+
+            if (walk.lenght <= 0)
+            {
+                ModelState.AddModelError(nameof(walk.lenght), $"lenght cannot be null");
+            }
+            if (walk.WalkdiffcultyID == null)
+            {
+                ModelState.AddModelError(nameof(walk.WalkdiffcultyID), $"WalkdiffcultyID cannot be null");
+            }
+            if (walk.RegionID == null)
+            {
+                ModelState.AddModelError(nameof(walk.Name), $"RegionID cannot be null");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
     }
 }
 

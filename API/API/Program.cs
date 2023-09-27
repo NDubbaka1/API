@@ -1,5 +1,6 @@
 using API.Data;
 using API.Repo;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Program>());
 
 // registering dbcontext to service container 
 builder.Services.AddDbContext<APIDBContext>(options =>
@@ -23,6 +25,8 @@ builder.Services.AddScoped<IRegioRepo,RegionRepo>();
 builder.Services.AddScoped<IWalkRepo, WalkRepo>();
 
 builder.Services.AddScoped<IWalkDiffRepo, WalkDiffRepo>();
+
+builder.Services.AddScoped<IInfoRepo, InfoRepo>();
 
 //builder.Services.AddDbContext<APIDBContext>(options =>
 //{

@@ -16,5 +16,7 @@ namespace API.Data
         public DbSet<Walk> Walks { get; set; }
 
         public DbSet<WalkDiffculty> WalkDiffculty { get; set; }
+
+        public DbSet<Info> Info { get; set; }
     }
 }

@@ -4,7 +4,8 @@ using API.Repo;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Serilog;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -18,22 +19,35 @@ namespace API.Controllers
         
         private readonly IRegioRepo regionRepo;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionController> logger;
 
-        public RegionController(IRegioRepo regionRepo , IMapper mapper)
+        public RegionController(IRegioRepo regionRepo , IMapper mapper , Microsoft.Extensions.Logging.ILogger<RegionController> logger)
         {
            this.regionRepo = regionRepo;
             this.mapper = mapper;
+            this.logger = logger;
         }
         
         
 
         [HttpGet]
         
-        public async Task<IActionResult> GetAllRegion([FromQuery] string? filterOn,[FromQuery] string? filterQuery)
+        public async Task<IActionResult> GetAllRegion()
         {
-           var Regions = await regionRepo.GetAllRegionAsync();
-            var RegionsDTO =mapper.Map<List<Model.DTO.Region>>(Regions);
-            return Ok(RegionsDTO);
+            try
+            {
+                throw new Exception("this is a custom expection");
+                var Regions = await regionRepo.GetAllRegionAsync();
+                var RegionsDTO = mapper.Map<List<Model.DTO.Region>>(Regions);
+                logger.LogInformation($"Finished:{JsonSerializer.Serialize(RegionsDTO)} ");
+                return Ok(RegionsDTO);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
+          
 
         }
 

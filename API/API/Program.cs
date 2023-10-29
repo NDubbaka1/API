@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +63,13 @@ builder.Services.AddDbContext<APIDBContextAuth>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("APIAuthConnection"));
 
 });
+
+//logging error
+var logger = new LoggerConfiguration().WriteTo.Console().
+    WriteTo.File("logs/API_Log.txt",rollingInterval:RollingInterval.Minute).
+    MinimumLevel.Warning().CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 builder.Services.AddScoped<IRegioRepo,RegionRepo>();
 
@@ -128,6 +137,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider =new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Image")),
+    RequestPath= "/Image"
+
+});
 //http pipeline
 app.UseAuthorization();
 app.UseAuthentication();

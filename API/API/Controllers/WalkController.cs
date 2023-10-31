@@ -27,6 +27,7 @@ namespace API.Controllers
         {
             var walk = await walkRepo.GetWalk(filterOn ,filterQuery,sortBy, isAscending ?? true , pageNumber, pageSize);
             //var walkDTO = mapper.Map<List<Model.DTO.Walk>>(walk);
+            throw new Exception("This is a new expection");
 
             return Ok(mapper.Map<List<Model.DTO.Walk>>(walk));
         }

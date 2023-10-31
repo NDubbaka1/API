@@ -1,4 +1,5 @@
 using API.Data;
+using API.Middleware;
 using API.Repo;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -135,7 +136,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExpectionHandlerMiddleWare>();
 app.UseHttpsRedirection();
 
 

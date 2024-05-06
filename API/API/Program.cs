@@ -72,6 +72,7 @@ var logger = new LoggerConfiguration().WriteTo.Console().
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
+// services of Repo
 builder.Services.AddScoped<IRegioRepo,RegionRepo>();
 
 builder.Services.AddScoped<IImage, ImageRepo>();

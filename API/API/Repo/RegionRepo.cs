@@ -25,7 +25,9 @@ namespace API.Repo
 
         public async Task<Region> GetRegionByIDAsync(Guid id)
         {
-            return await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+            var getRegion = await aPIDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            return getRegion;
         }
 
         public async Task<Region> AddRegionAsync(Region region)
